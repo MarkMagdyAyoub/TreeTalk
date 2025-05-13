@@ -1,0 +1,9 @@
+.vs
+/TreeTalk/Bin
+/TreeTalk/obj
+/TreeTalk/Properties
+/TreeTalk/wwwroot/bootstrap
+/TreeTalk/wwwroot/jquery
+/TreeTalk/wwwroot/lib
+/TreeTalk/appsettings.json
+/TreeTalk/appsettings.Development.json

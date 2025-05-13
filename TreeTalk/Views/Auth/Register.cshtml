@@ -1,0 +1,100 @@
+﻿@model RegisterViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "Register";
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_Validation");
+    }
+}
+
+@section Links{
+    <link href="~/css/Register.css" rel="stylesheet" />
+}
+
+<div style="
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+">
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="col-md-6 col-lg-5 shadow p-4 rounded bg-white">
+            
+
+            <div class="d-flex align-items-center justify-content-center mb-4 gap-2">
+                <img src="~/images/treetalk3.png" alt="TreeTalk Logo" style="max-height: 50px;" />
+                <h2 class="mb-0">Register</h2>
+                <img src="~/images/treetalk3.png" alt="TreeTalk Logo" style="max-height: 50px;" />
+            </div>
+
+
+
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+            @if (!string.IsNullOrEmpty(ViewData.ModelState.GetModelErrorMessages().FirstOrDefault()))
+            {
+                <div class="alert alert-danger p-2 text-center mb-3">
+                    @ViewData.ModelState.GetModelErrorMessages().FirstOrDefault()
+                </div>
+            }
+
+            <form asp-action="Register" method="post" novalidate>
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label">Username</label>
+                    <input asp-for="Username" class="form-control" placeholder="Enter username" />
+                    <span asp-validation-for="Username" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" id="email" class="form-control" type="email" placeholder="Enter email address" />
+                    <span id="email-feedback" asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input asp-for="Password" id="password" class="form-control" type="password" placeholder="Enter a strong password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+
+                    <div class="form-text mt-2">
+                        <strong>Password must meet all of the following:</strong>
+                        <ul class="small ps-3 mb-0" id="password-rules">
+                            <li id="rule-length">At least 10 characters long</li>
+                            <li id="rule-lower">At least 3 lowercase letters (a-z)</li>
+                            <li id="rule-upper">At least 3 uppercase letters (A-Z)</li>
+                            <li id="rule-digit">At least 2 digits (0-9)</li>
+                            <li id="rule-special">At least 2 special characters (!#@@$%^&*(),.?":'{}|<>)</li>
+                            <li id="rule-space">No whitespace allowed</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Birthday" class="form-label">Birthday</label>
+                    <input asp-for="Birthday" class="form-control" type="date" placeholder="Select your birthday" />
+                    <span asp-validation-for="Birthday" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <div>
+                        <input type="radio" id="Male" name="Gender" value="M" class="form-check-input" required />
+                        <label for="Male" class="form-check-label me-3">Male</label>
+                        <input type="radio" id="Female" name="Gender" value="F" class="form-check-input" required />
+                        <label for="Female" class="form-check-label">Female</label>
+                    </div>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+
+            <p class="mt-3 text-center">
+                Already have an account?
+                <a asp-action="Login" class="text-decoration-none">Login here</a>
+            </p>
+        </div>
+    </div>
+</div>

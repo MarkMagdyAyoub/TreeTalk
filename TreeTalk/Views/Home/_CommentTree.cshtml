@@ -1,0 +1,110 @@
+﻿@model Tuple<IEnumerable<CommentTreeDto>, int?>
+@functions {
+    string GetDepthColor(int depth)
+    {
+        var colors = new[]
+        {
+            "#6366f1",
+            "#10b981",
+            "#3b82f6",
+            "#f59e0b",
+            "#8b5cf6",
+            "#ec4899",
+            "#ef4444"
+        };
+        return colors[depth % colors.Length];
+    }
+}
+
+@{
+    var allComments = Model.Item1.OrderBy(c => c.Path).ToList();
+    var parentId = Model.Item2;
+    var comments = allComments.Where(c => c.ParentCommentID == parentId).ToList();
+}
+
+@if (comments.Any())
+{
+    <div class="comments-list">
+        @foreach (var comment in comments)
+        {
+            var childComments = allComments.Where(c => c.ParentCommentID == comment.CommentID).ToList();
+            var hasChildren = childComments.Any();
+            <div class="comment mb-4" style="margin-left: @(comment.Depth)px;">
+                <div class="modern-comment comment-border" style="border-left: 3px solid @GetDepthColor(comment.Depth); padding-left: 5px;">
+                    <div class="d-flex gap-3">
+                        <div class="flex-shrink-0">
+                            @if (!string.IsNullOrEmpty(comment.ImageUrl))
+                            {
+                                <img src="@comment.ImageUrl" alt="User" class="avatar rounded-circle" width="40" height="40" />
+                            }
+                            else
+                            {
+                                <i class="bi bi-person-circle text-muted" style="font-size: 2.5rem;"></i>
+                            }
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div class="username fw-semibold">@comment.Username</div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-primary btn-sm rounded-pill like-comment-btn"
+                                            data-comment-id="@comment.CommentID"
+                                            data-user-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value"
+                                            data-like-url="@Url.Action("LikeComment", "Posts")">
+                                        <i class="bi bi-hand-thumbs-up"></i>
+                                        <span class="like-count">@comment.Likes</span>
+                                    </button>
+                                    @if (comment.Depth < 7)
+                                    {
+                                        <button class="btn btn-outline-secondary btn-sm rounded-pill reply-toggle">
+                                            <i class="bi bi-reply"></i> Reply
+                                        </button>
+                                    }
+                                    @if (hasChildren)
+                                    {
+                                        <button class="btn btn-outline-info btn-sm rounded-pill toggle-replies">
+                                            <i class="bi bi-plus-circle"></i> Show Replies
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                            <div class="comment-meta text-muted small mb-2">Depth: @comment.Depth</div>
+                            <div class="comment-content inline-block max-w-prose bg-gray-100 p-4 rounded-xl shadow-sm text-gray-800 text-base leading-relaxed">
+                                @comment.IndentedContent
+                            </div>
+
+                            <form class="reply-form d-none mt-3" method="post" asp-controller="Posts" asp-action="Add">
+                                <input type="hidden" name="PostId" value="@ViewData["PostId"]" />
+                                <input type="hidden" name="ParentId" value="@comment.CommentID" />
+                                <div class="input-group shadow-sm border rounded-pill px-3 py-2 align-items-center">
+                                    <input type="text"
+                                           name="Content"
+                                           class="form-control border-0 bg-transparent rounded-pill px-3"
+                                           placeholder="Write a reply..."
+                                           required
+                                           style="box-shadow: none;" />
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                        <i class="bi bi-send-fill"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            @if (hasChildren)
+                            {
+                                <div class="child-comments d-none mt-3">
+                                    <partial name="_CommentTree" model="Tuple.Create<IEnumerable<CommentTreeDto>, int?>(allComments, comment.CommentID)" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center text-muted py-3">
+        <i class="bi bi-chat-left-text fs-4 d-block mb-2"></i>
+        <p>No comments yet. Be the first to comment!</p>
+    </div>
+}

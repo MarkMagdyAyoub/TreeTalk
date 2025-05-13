@@ -1,0 +1,129 @@
+﻿:root {
+    --bg-color: #ffffff;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --card-border: rgba(0,0,0,0.1);
+    --border-color: rgba(0,0,0,0.1);
+    --secondary-bg: #f8f9fa;
+    --hover-shadow: rgba(0, 0, 0, 0.08);
+    --form-bg: #f9fafb;
+    --input-bg: #ffffff; 
+    --muted-text: #6c757d;
+    --navbar-bg: #212529;
+    --navbar-text: #ffffff;
+}
+
+[data-bs-theme="dark"] {
+    --bg-color: #1a1d20;
+    --text-color: #e9ecef;
+    --card-bg: #212529;
+    --card-border: rgba(255,255,255,0.1);
+    --border-color: rgba(255,255,255,0.1);
+    --secondary-bg: #343a40;
+    --hover-shadow: rgba(0, 0, 0, 0.25);
+    --form-bg: #2b3035;
+    --input-bg: #343a40;
+    --muted-text: #adb5bd;
+    --navbar-bg: #0f1113;
+    --navbar-text: #e9ecef;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.post-card {
+    transition: box-shadow 0.3s ease;
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.post-card:hover {
+    box-shadow: 0 8px 20px var(--hover-shadow);
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.comment-form .form-control {
+    border-radius: 1.25rem;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.comment-form .btn {
+    border-radius: 1.25rem;
+}
+
+.comments-section {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.comment-toggle-btn {
+    transition: all 0.2s ease;
+}
+
+.comment-toggle-btn:hover {
+    transform: translateY(-2px);
+}
+
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    color: var(--navbar-text) !important;
+    transition: background-color 0.3s ease;
+}
+
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.input-group {
+    background-color: var(--form-bg) !important;
+}
+
+.input-group .form-control {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+.search-btn {
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    background-color: var(--form-bg);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: var(--secondary-bg);
+}
+
+.comment-content {
+    display: inline-block;
+    max-width: 60ch;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    line-height: 1.6;
+    word-wrap: break-word;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}

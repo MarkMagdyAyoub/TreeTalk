@@ -1,0 +1,25 @@
+﻿.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875em;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+#password-rules li.text-success {
+    color: green;
+}
+
+#password-rules li.text-danger {
+    color: red;
+}
+
+.text-success {
+    color: green;
+}
+
+.text-danger {
+    color: red;
+}

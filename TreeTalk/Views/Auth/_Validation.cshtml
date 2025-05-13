@@ -1,0 +1,45 @@
+﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#password').on('input', function () {
+            const pwd = $(this).val();
+
+            const rules = {
+                length: pwd.length >= 10,
+                lower: (pwd.match(/[a-z]/g) || []).length >= 3,
+                upper: (pwd.match(/[A-Z]/g) || []).length >= 3,
+                digit: (pwd.match(/[0-9]/g) || []).length >= 2,
+                special: (pwd.match(/[!#@@$%^&*(),.?":'{}|<>]/g) || []).length >= 2,
+                space: !/\s/.test(pwd)
+            };
+
+            $('#rule-length').toggleClass('text-success', rules.length).toggleClass('text-danger', !rules.length);
+            $('#rule-lower').toggleClass('text-success', rules.lower).toggleClass('text-danger', !rules.lower);
+            $('#rule-upper').toggleClass('text-success', rules.upper).toggleClass('text-danger', !rules.upper);
+            $('#rule-digit').toggleClass('text-success', rules.digit).toggleClass('text-danger', !rules.digit);
+            $('#rule-special').toggleClass('text-success', rules.special).toggleClass('text-danger', !rules.special);
+            $('#rule-space').toggleClass('text-success', rules.space).toggleClass('text-danger', !rules.space);
+        });
+    });
+    $(document).ready(function () {
+        $('#email').on('input', function () {
+            const email = $(this).val().trim();
+            const feedback = $('#email-feedback');
+
+            if (email.length === 0) {
+                feedback.text('').removeClass('text-danger text-success');
+            } else if (email.endsWith('@@gmail.com')) {
+                feedback.text('Valid Gmail address').removeClass('text-danger').addClass('text-success');
+            } else {
+                feedback.text('Email must end with @@gmail.com').removeClass('text-success').addClass('text-danger');
+            }
+        });
+    });
+    $('form').on('submit', function (e) {
+        const email = $('#email').val().trim();
+        if (!email.endsWith('@@gmail.com')) {
+            e.preventDefault();
+            $('#email-feedback').text('Email must end with @@gmail.com').addClass('text-danger');
+        }
+    });
+</script>
