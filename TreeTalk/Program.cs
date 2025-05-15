@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TreeTalkModel.Model.Data;
 using TreeTalk.Controllers;
+using TreeTalkModel.Model.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // configurations
@@ -29,6 +30,7 @@ builder.Services.AddDbContext<TreeTalkDbContext>(options =>
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("AppSettings:Jwt"));
 
 builder.Services.AddSingleton<JwtService>();
+builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddSingleton<ILogger , Logger<AuthController>>();
 
 builder.Services

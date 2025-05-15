@@ -903,3 +903,88 @@ namespace TreeTalkModel.Model.Data.Config
     }
   }
 }
+
+
+/*
+ * 
+ * testing for new user posts
+ -- Insert posts (using IDs 21 and 22 which don't conflict with existing posts)
+INSERT INTO "Post" (
+    "Id", "AuthorId", "Title", "Content", "ImageUrl", 
+    "Likes", "CreatedAt", "UpdatedAt", "IsDeleted"
+) VALUES
+-- Post 21: Hardware Review
+(
+    21, 21, 'RTX 4080 vs 4090 - Is the Price Jump Worth It?',
+    'After testing both cards extensively, here are my thoughts on whether the 4090 justifies its premium price over the 4080 for gaming and creative workloads.',
+    'https://example.com/gpu-comparison.jpg',
+    0, '2025-04-06 12:00:00', NULL, FALSE
+),
+-- Post 22: PC Building Guide
+(
+    22, 21, 'My Ultimate 4K Gaming Build - Summer 2025',
+    'Component breakdown and benchmarks for my high-end gaming rig optimized for 4K gaming with the latest hardware.',
+    'https://example.com/pc-build.jpg',
+    0, '2025-04-07 12:00:00', NULL, FALSE
+);
+
+-- Insert comments (using IDs starting from 117 which don't conflict with existing comments)
+INSERT INTO "Comment" (
+    "Id", "PostId", "AuthorId", "ParentId", "Content", 
+    "IsDeleted", "Depth", "Likes", "CreatedAt", "UpdatedAt"
+) VALUES
+-- Comments on Post 21 (RTX comparison)
+(
+    117, 21, 21, NULL, 'For 4K gaming, the 4090 is clearly superior, but at 1440p the difference shrinks.',
+    FALSE, 1, 0, '2025-04-06 14:00:00', NULL
+),
+(
+    118, 21, 5, 117, 'What about for machine learning workloads?',
+    FALSE, 2, 0, '2025-04-06 15:00:00', NULL
+),
+(
+    119, 21, 21, 118, 'The 4090 shines for ML with 24GB VRAM vs 16GB on the 4080.',
+    FALSE, 3, 0, '2025-04-06 16:00:00', NULL
+),
+(
+    120, 21, 8, NULL, 'Power consumption difference is massive too.',
+    FALSE, 1, 0, '2025-04-06 17:00:00', NULL
+),
+(
+    121, 21, 21, 120, 'True - 320W vs 450W. Need a good PSU for the 4090.',
+    FALSE, 2, 0, '2025-04-06 18:00:00', NULL
+),
+-- Comments on Post 22 (PC Build)
+(
+    122, 22, 21, NULL, 'Key tip: Don''t cheap out on the power supply!',
+    FALSE, 1, 0, '2025-04-07 14:00:00', NULL
+),
+(
+    123, 22, 12, 122, 'What wattage would you recommend?',
+    FALSE, 2, 0, '2025-04-07 15:00:00', NULL
+),
+(
+    124, 22, 21, 123, 'For a 4090 system, 1000W minimum. I use a 1200W Platinum.',
+    FALSE, 3, 0, '2025-04-07 16:00:00', NULL
+);
+
+-- Insert post likes (using IDs starting from 25 which don't conflict)
+INSERT INTO "PostLike" (
+    "Id", "PostId", "UserId"
+) VALUES
+-- Likes on mark's posts
+(25, 21, 5),  -- Emily liked the GPU comparison
+(26, 21, 10), -- Jack liked it
+(27, 22, 3),  -- Charlie liked the PC build
+(28, 22, 7);  -- Grace liked it
+
+-- Insert comment likes (using IDs starting from 26 which don't conflict)
+INSERT INTO "CommentLike" (
+    "Id", "CommentId", "UserId"
+) VALUES
+-- Likes on mark's comments
+(26, 117, 5),  -- Emily liked mark's first comment
+(27, 119, 8),  -- Henry liked the ML response
+(28, 121, 12); -- Liam liked the PSU comment
+ 
+ */
