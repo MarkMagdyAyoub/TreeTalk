@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using TreeTalk.Model.Entities.DTOs;
 using TreeTalk.Model.ViewModels;
 using TreeTalkModel.Model.Data;
 using TreeTalkModel.Model.DTOs;
@@ -23,11 +24,18 @@ public class UserProfileService
     _context = context ?? throw new ArgumentNullException(nameof(context));
   }
 
-  /// <summary>
-  /// Retrieves a user's profile information as a DTO.
-  /// </summary>
-  /// <param name="userId">The ID of the user whose profile is being retrieved.</param>
-  /// <returns>A <see cref="UserProfileDto"/> if found; otherwise, <c>null</c>.</returns>
+  public async Task<User?> GetUserByIdAsync(int id) {
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+    if (user != null)
+    {
+      return user;
+    }
+    else {
+      return null;
+    }
+  }
+
   public async Task<UserProfileDto?> GetProfileAsync(int userId)
   {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -49,14 +57,6 @@ public class UserProfileService
     };
   }
 
-  /// <summary>
-  /// Retrieves a paginated list of posts made by a user along with their comments.
-  /// </summary>
-  /// <param name="userId">The ID of the user whose posts are being fetched.</param>
-  /// <param name="pageNumber">The current page number for pagination.</param>
-  /// <param name="pageSize">The number of posts per page.</param>
-  /// <returns>A <see cref="PostFeedViewModel"/> containing the posts and comments for the specified page.</returns>
-  /// <exception cref="ArgumentException">Thrown when the user does not exist, or pagination parameters are invalid.</exception>
   public async Task<PostFeedViewModel> GetPostPageAsync(int userId, int pageNumber, int pageSize)
   {
     var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -115,29 +115,44 @@ public class UserProfileService
     return model;
   }
 
-  /// <summary>
-  /// Updates the birth date of the specified user.
-  /// </summary>
-  /// <param name="userid">The ID of the user whose birth date will be updated.</param>
-  /// <param name="birthDate">The new birth date to assign.</param>
-  /// <returns>A task representing the asynchronous operation.</returns>
   public async Task UpdateDateAync(int userid, DateTime birthDate)
   {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userid);
-    user!.Birthday = birthDate;
+    if (user == null) throw new ArgumentException("User not found");
+    user.Birthday = birthDate;
     await _context.SaveChangesAsync();
   }
 
-  /// <summary>
-  /// Updates the "About Me" section of the specified user's profile.
-  /// </summary>
-  /// <param name="userid">The ID of the user whose information is being updated.</param>
-  /// <param name="aboutMe">The new "About Me" content.</param>
-  /// <returns>A task representing the asynchronous operation.</returns>
   public async Task UpdateAboutMeAsync(int userid, string aboutMe)
   {
     var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userid);
-    user!.AboutMe = aboutMe;
+    if (user == null) throw new ArgumentException("User not found");
+    user.AboutMe = aboutMe;
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task UpdateGenderAsync(int userid, char gender)
+  {
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userid);
+    if (user == null) throw new ArgumentException("User not found");
+
+    if (gender != 'M' && gender != 'F')
+      throw new ArgumentException("Gender must be 'M' or 'F'");
+
+    user.Gender = gender;
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task UpdateUserProfileAsync(UpdateUserProfileRequest request)
+  {
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+    if (user == null) throw new ArgumentException("User not found");
+
+    user.AboutMe = request.AboutMe;
+    user.Birthday = request.BirthDate;
+    user.Gender = request.Gender;
+    user.UserImageUrl = request.UserProfileImageUrl;
+
     await _context.SaveChangesAsync();
   }
 }

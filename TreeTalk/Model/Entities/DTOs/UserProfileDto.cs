@@ -11,5 +11,6 @@ public class UserProfileDto
   public string? AboutMe { get; set; }
   public string UserImageUrl { get; set; } = string.Empty ;
   public DateTime BirthDate { get; set; }
+  public IFormFile? ProfilePicture { get; set; }
   public char Gender { get; set; }
 }

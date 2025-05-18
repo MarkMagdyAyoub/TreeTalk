@@ -32,7 +32,7 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddSingleton<ILogger , Logger<AuthController>>();
-
+//builder.Services.AddScoped<IWebHostEnvironment>();
 builder.Services
   .AddAuthentication(
     options => {

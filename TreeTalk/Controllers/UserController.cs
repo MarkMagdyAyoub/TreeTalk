@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TreeTalk.Model.Entities.DTOs;
 using TreeTalkModel.Model.Data;
+using TreeTalkModel.Model.Entities;
 using TreeTalkModel.Model.Services;
 
 namespace TreeTalk.Controllers;
@@ -17,11 +19,14 @@ namespace TreeTalk.Controllers;
 public class UserController : Controller
 {
   private readonly UserProfileService _profileService;
+  private readonly IWebHostEnvironment _env;
 
-  public UserController(UserProfileService profileService, TreeTalkDbContext context)
+  public UserController(UserProfileService profileService, TreeTalkDbContext context, IWebHostEnvironment env)
   {
     _profileService = profileService;
+    _env = env;
   }
+
 
   /// <summary>
   /// Retrieves the profile of the currently authenticated user and returns it as a view.
@@ -85,4 +90,60 @@ public class UserController : Controller
     await _profileService.UpdateAboutMeAsync(request.UserId, request.AboutMe);
     return Ok(new { Message = "User's AboutMe Updated Successfully" });
   }
+
+  /// <summary>
+  /// Updates the user's profile including profile picture, birth date, about me, and gender.
+  /// </summary>
+  [HttpPost("EditProfile")]
+  public async Task<IActionResult> EditProfile(EditProfileRequest request)
+  {
+    int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+    var user = await _profileService.GetUserByIdAsync(userId);
+
+    if (user == null)
+      return NotFound();
+
+    string? newProfilePicturePath = user.UserImageUrl; // default to current image
+
+    if (request.ProfilePicture != null && request.ProfilePicture.Length > 0)
+    {
+      // Delete old profile picture if it's not the default
+      if (!string.IsNullOrEmpty(user.UserImageUrl) && !user.UserImageUrl.Contains("defaultProfile.png"))
+      {
+        var oldImagePath = Path.Combine(_env.WebRootPath, user.UserImageUrl.TrimStart('/'));
+        if (System.IO.File.Exists(oldImagePath))
+        {
+          System.IO.File.Delete(oldImagePath);
+        }
+      }
+
+      // Save the new image
+      var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.ProfilePicture.FileName)}";
+      var uploadPath = Path.Combine(_env.WebRootPath, "uploads", "profiles");
+      Directory.CreateDirectory(uploadPath);
+
+      var filePath = Path.Combine(uploadPath, fileName);
+      using (var stream = new FileStream(filePath, FileMode.Create))
+      {
+        await request.ProfilePicture.CopyToAsync(stream);
+      }
+
+      newProfilePicturePath = $"/uploads/profiles/{fileName}";
+    }
+
+    // Update the user info
+    await _profileService.UpdateUserProfileAsync(new UpdateUserProfileRequest
+    {
+      UserId = userId,
+      AboutMe = request.AboutMe,
+      Gender = request.Gender,
+      BirthDate = request.BirthDate,
+      UserProfileImageUrl = newProfilePicturePath!
+    });
+
+    return RedirectToAction("UserProfile");
+  }
+
+
 }
