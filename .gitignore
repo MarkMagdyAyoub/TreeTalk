@@ -4,6 +4,8 @@
 /TreeTalk/Properties
 /TreeTalk/wwwroot/bootstrap
 /TreeTalk/wwwroot/jquery
+/TreeTalk/wwwroot/uploads/posts/*
+/TreeTalk/wwwroot/uploads/images/*
 /TreeTalk/wwwroot/lib
 /TreeTalk/appsettings.json
 /TreeTalk/appsettings.Development.json
