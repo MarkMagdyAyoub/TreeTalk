@@ -127,3 +127,29 @@ body {
     word-wrap: break-word;
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
+.post-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    transition: transform 0.3s ease;
+    max-height: 300px;
+    background-color: #f8f9fa;
+}
+
+.post-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .post-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+.modal-content {
+    background: transparent;
+    box-shadow: none;
+}

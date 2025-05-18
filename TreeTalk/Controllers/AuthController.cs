@@ -168,7 +168,7 @@ public class AuthController : Controller
     );
 
     _logger.LogInformation("User signed in with email: {Email}", model.Email);
-    return RedirectToAction("Index", "Home");
+    return RedirectToAction("Index", "Home" , new { page = 1, pageSize = 20 });
   }
 
   /// <summary>
@@ -292,7 +292,7 @@ public class AuthController : Controller
     Response.Cookies.Append("auth_token", token, cookieOptions);
 
     _logger.LogInformation("Google login successful, JWT issued, and cookie set for: {Email}", email);
-    return RedirectToAction("Index", "Home");
+    return RedirectToAction("Index", "Home" , new { page = 1, pageSize = 20 });
   }
 
   /// <summary>

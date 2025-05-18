@@ -54,9 +54,10 @@ public class UserController : Controller
   [Route("GetUserPostsPage")]
   public async Task<IActionResult> GetUserPostsPage([FromBody] UserPostsPage request)
   {
+    int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
     try
     {
-      var model = await _profileService.GetPostPageAsync(request.UserId, request.PageNumber, request.PageSize);
+      var model = await _profileService.GetPostPageAsync(userId, request.PageNumber, request.PageSize);
       return PartialView("_UserPostsPartial", model);
     }
     catch (ArgumentException ex)
@@ -145,5 +146,32 @@ public class UserController : Controller
     return RedirectToAction("UserProfile");
   }
 
+  [HttpPost]
+  [Route("CreatePost")]
+  public async Task<IActionResult> CreatePost(AddPostRequest request)
+  {
+      int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
+      string? imagePath = null;
+      if (request.Image != null)
+      {
+          string fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
+          string folderPath = Path.Combine(_env.WebRootPath, "uploads", "posts");
+
+          // Ensure the folder exists
+          if (!Directory.Exists(folderPath))
+              Directory.CreateDirectory(folderPath);
+
+          string filePath = Path.Combine(folderPath, fileName);
+
+          using var stream = new FileStream(filePath, FileMode.Create);
+          await request.Image.CopyToAsync(stream);
+
+          imagePath = "/uploads/posts/" + fileName;
+      }
+
+      bool is_added = await _profileService.AddPostAsync(userId, request.Title, request.Content, imagePath);
+
+      return RedirectToAction("UserProfile");
+  }
 }

@@ -95,6 +95,7 @@ public class UserProfileService
           Content = post.Content ?? string.Empty,
           CreatedAt = post.CreatedAt,
           Likes = post.Likes,
+          ImageUrl = post.ImageUrl ?? string.Empty,
           Author = new PostWithCommentsDto.AuthorDto
           {
             Username = post.User?.Username ?? string.Empty,
@@ -154,5 +155,30 @@ public class UserProfileService
     user.UserImageUrl = request.UserProfileImageUrl;
 
     await _context.SaveChangesAsync();
+  }
+
+  public async Task<bool> AddPostAsync(int userId, string title , string content , string imagePath) {
+    var user = await GetUserByIdAsync(userId);
+    if (user == null) throw new ArgumentException("User not found");
+    try
+    {
+      var post = new Post
+      {
+        Title = title,
+        Content = content,
+        ImageUrl = imagePath,
+        AuthorId = userId,
+        IsDeleted = false,
+        Likes = 0,
+        UpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.Now
+      };
+      await _context.Posts.AddAsync(post);
+      await _context.SaveChangesAsync();
+      return true;
+    }
+    catch{
+      return false;
+    }
   }
 }

@@ -1,5 +1,4 @@
 ﻿@model TreeTalk.Model.ViewModels.PostFeedViewModel
-
 <div class="container py-5">
     @foreach (var postWithComments in Model.PostsWithComments)
     {
@@ -9,11 +8,34 @@
                 <h4 class="card-title fw-bold mb-2 text-primary">@post.Title</h4>
                 <p class="card-text fs-6">@post.Content</p>
 
+                @if (!string.IsNullOrEmpty(post.ImageUrl))
+                {
+                    var modalId = $"imageModal_{post.Id}";
+                    <div class="post-image-wrapper my-3">
+                        <img src="@post.ImageUrl"
+                             alt="Post Image"
+                             class="img-fluid w-100 post-image"
+                             loading="lazy"
+                             style="cursor: zoom-in"
+                             data-bs-toggle="modal"
+                             data-bs-target="#@modalId" />
+                    </div>
+
+                    <div class="modal fade" id="@modalId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content bg-transparent border-0 shadow-none">
+                                <div class="modal-body p-0 d-flex justify-content-center">
+                                    <img src="@post.ImageUrl" class="img-fluid rounded-4" alt="Full Image" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="text-muted small">
                         👤 @post.Author?.Username · 📅 @post.CreatedAt.ToString("g")
                     </div>
-
                     <div class="d-flex gap-2 align-items-center">
                         <button class="btn btn-outline-success btn-sm rounded-pill shadow-sm like-btn"
                                 data-post-id="@post.Id"
@@ -58,7 +80,7 @@
     <div class="d-flex justify-content-between align-items-center mt-5">
         @if (Model.CurrentPage > 1)
         {
-            <a href="@Url.Action("Feed", "Posts", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize })"
+            <a href="@Url.Action("GetUserPostsPage", "User", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize })"
                class="btn btn-outline-primary rounded-pill shadow-sm">
                 <i class="bi bi-chevron-left"></i> Previous
             </a>
@@ -72,7 +94,7 @@
 
         @if (Model.CurrentPage < Model.TotalPages)
         {
-            <a href="@Url.Action("Feed", "Posts", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize })"
+            <a href="@Url.Action("GetUserPostsPage", "User", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize })"
                class="btn btn-outline-primary rounded-pill shadow-sm">
                 Next <i class="bi bi-chevron-right"></i>
             </a>

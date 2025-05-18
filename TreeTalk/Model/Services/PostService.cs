@@ -70,6 +70,7 @@ public static class PostService
           Content = post.Content ?? string.Empty,
           CreatedAt = post.CreatedAt,
           Likes = post.Likes,
+          ImageUrl = post.ImageUrl,
           Author = new PostWithCommentsDto.AuthorDto
           {
             Username = post.User?.Username ?? string.Empty,

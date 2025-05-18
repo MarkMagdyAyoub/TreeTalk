@@ -34,7 +34,7 @@ public class PostsController : Controller
   public async Task<IActionResult> Feed(int page = 1, int pageSize = 10)
   {
     var model = await _context.FeedDataAsync(page, pageSize);
-    return View(model);
+    return RedirectToAction("Index","Home" , new { page , pageSize});
   }
 
   /// <summary>

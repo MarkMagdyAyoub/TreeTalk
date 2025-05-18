@@ -14,7 +14,7 @@ public class HomeController : Controller
     _context = context;
   }
   [Authorize]
-  public async Task<IActionResult> Index()
+  public async Task<IActionResult> Index(int page = 1 , int pageSize = 10)
   {
     string username = "Guest";
     if (User.Identity?.IsAuthenticated == true)
@@ -32,7 +32,7 @@ public class HomeController : Controller
     }
     ViewData["Username"] = username;
     // TODO: Dynamic Content Feed Instead Of Hardcoded
-    var model = await _context.FeedDataAsync(1 , 20);
+    var model = await _context.FeedDataAsync(page, pageSize);
     return View(model);
   }
 }

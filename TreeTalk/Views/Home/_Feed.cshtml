@@ -8,6 +8,29 @@
             <div class="card-body">
                 <h4 class="card-title fw-bold mb-2 text-primary">@post.Title</h4>
                 <p class="card-text fs-6">@post.Content</p>
+                @if (!string.IsNullOrEmpty(post.ImageUrl))
+                {
+                    var modalId = $"imageModal_{post.Id}";
+                    <div class="post-image-wrapper my-3">
+                        <img src="@post.ImageUrl"
+                             alt="Post Image"
+                             class="img-fluid w-100 post-image"
+                             loading="lazy"
+                             style="cursor: zoom-in"
+                             data-bs-toggle="modal"
+                             data-bs-target="#@modalId" />
+                    </div>
+
+                    <div class="modal fade" id="@modalId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content bg-transparent border-0 shadow-none">
+                                <div class="modal-body p-0 d-flex justify-content-center">
+                                    <img src="@post.ImageUrl" class="img-fluid rounded-4" alt="Full Image" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="text-muted small">
@@ -68,7 +91,6 @@
             <div></div>
         }
 
-        <span class="fw-medium text-muted">Page @Model.CurrentPage of @Model.TotalPages</span>
 
         @if (Model.CurrentPage < Model.TotalPages)
         {

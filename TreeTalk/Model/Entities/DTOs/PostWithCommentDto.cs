@@ -11,6 +11,7 @@ public class PostWithCommentsDto
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public int Likes { get; set; }
+    public string? ImageUrl { get; set; } = string.Empty;
     public AuthorDto Author { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
   }
