@@ -20,7 +20,7 @@ public class HomeController : Controller
     if (User.Identity?.IsAuthenticated == true)
     {
       var usernameClaim = User.FindFirst("Username")?.Value
-                       ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
       if (!string.IsNullOrEmpty(usernameClaim))
       {
@@ -31,7 +31,6 @@ public class HomeController : Controller
       return RedirectToAction("AccessDenied", "Auth");
     }
     ViewData["Username"] = username;
-    // TODO: Dynamic Content Feed Instead Of Hardcoded
     var model = await _context.FeedDataAsync(page, pageSize);
     return View(model);
   }

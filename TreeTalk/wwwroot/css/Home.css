@@ -2,23 +2,26 @@
     --bg-color: #ffffff;
     --text-color: #212529;
     --card-bg: #ffffff;
-    --card-border: rgba(0,0,0,0.1);
-    --border-color: rgba(0,0,0,0.1);
+    --card-border: rgba(0, 0, 0, 0.1);
+    --border-color: rgba(0, 0, 0, 0.1);
     --secondary-bg: #f8f9fa;
     --hover-shadow: rgba(0, 0, 0, 0.08);
     --form-bg: #f9fafb;
-    --input-bg: #ffffff; 
+    --input-bg: #ffffff;
     --muted-text: #6c757d;
     --navbar-bg: #212529;
     --navbar-text: #ffffff;
+    --transition: 0.3s ease;
+    --radius-lg: 1.25rem;
+    --radius-sm: 0.75rem;
 }
 
 [data-bs-theme="dark"] {
     --bg-color: #1a1d20;
     --text-color: #e9ecef;
     --card-bg: #212529;
-    --card-border: rgba(255,255,255,0.1);
-    --border-color: rgba(255,255,255,0.1);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(255, 255, 255, 0.1);
     --secondary-bg: #343a40;
     --hover-shadow: rgba(0, 0, 0, 0.25);
     --form-bg: #2b3035;
@@ -28,16 +31,58 @@
     --navbar-text: #e9ecef;
 }
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+/* Make sure all text inside navbar uses the navbar text color variable */
+.navbar,
+.navbar * {
+    color: var(--navbar-text) !important;
+}
+
+/* If you want to be more specific for the greeting */
+.navbar-text {
+    color: var(--navbar-text) !important;
+}
+
+html {
+    font-size: 16px;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.6;
+    transition: background-color var(--transition), color var(--transition);
 }
 
-.post-card {
-    transition: box-shadow 0.3s ease;
+/* Layout Containers */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    color: var(--navbar-text) !important;
+    transition: background-color var(--transition);
+    padding: 0.75rem 1.5rem;
+}
+
+/* Cards & Posts */
+.post-card, .card {
     background-color: var(--card-bg);
-    border-color: var(--card-border);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 2px 6px var(--hover-shadow);
+    transition: box-shadow var(--transition), background-color var(--transition);
+    overflow: hidden;
+    padding: 1rem;
 }
 
 .post-card:hover {
@@ -48,100 +93,116 @@ body {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-.comment-form .form-control {
-    border-radius: 1.25rem;
-    background-color: var(--input-bg);
-    color: var(--text-color);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-.comment-form .btn {
-    border-radius: 1.25rem;
-}
-
+/* Comment Section */
 .comments-section {
     border-top: 1px solid var(--border-color);
     margin-top: 1rem;
     padding-top: 1rem;
 }
 
-.comment-toggle-btn {
-    transition: all 0.2s ease;
+.comment-content {
+    max-width: 100%;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
 }
 
-.comment-toggle-btn:hover {
-    transform: translateY(-2px);
-}
-
-.text-muted {
-    color: var(--muted-text) !important;
-}
-
-.navbar {
-    background-color: var(--navbar-bg) !important;
-    color: var(--navbar-text) !important;
-    transition: background-color 0.3s ease;
-}
-
+/* Form Styles */
 .form-control, .form-select {
     background-color: var(--input-bg);
     color: var(--text-color);
-    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    transition: all var(--transition);
 }
 
 .input-group {
-    background-color: var(--form-bg) !important;
+    background-color: var(--form-bg);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
 }
 
-.input-group .form-control {
-    background-color: var(--input-bg);
-    color: var(--text-color);
+    .input-group .form-control {
+        border-radius: 0;
+    }
+
+.comment-form .form-control {
+    border-radius: var(--radius-lg);
 }
 
-.card {
-    background-color: var(--card-bg);
-    border-color: var(--card-border);
+.comment-form .btn {
+    border-radius: var(--radius-lg);
 }
 
+/* Modern Buttons */
+.btn {
+    transition: all 0.2s ease;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+.btn-success {
+    background-color: rgba(0, 255, 150, 0.2);
+    border: 1px solid rgba(0, 255, 150, 0.4);
+    color: #0f0;
+}
+
+    .btn-success:hover {
+        background-color: rgba(0, 255, 150, 0.4);
+    }
+
+.btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+/* Search Button */
 .search-btn {
     border: 1px solid var(--border-color);
     color: var(--text-color);
     background-color: var(--form-bg);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    transition: var(--transition);
 }
 
 .search-btn:hover {
     background-color: var(--secondary-bg);
 }
 
-.comment-content {
-    display: inline-block;
-    max-width: 60ch;
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    padding: 1rem 1.25rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    line-height: 1.6;
-    word-wrap: break-word;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
+/* Image Posts */
 .post-image-wrapper {
     position: relative;
     overflow: hidden;
-    border-radius: 1rem;
-    transition: transform 0.3s ease;
+    border-radius: var(--radius-lg);
     max-height: 300px;
-    background-color: #f8f9fa;
+    background-color: var(--secondary-bg);
 }
 
 .post-image {
     object-fit: cover;
-    height: 100%;
     width: 100%;
-    border-radius: 1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    transition: transform var(--transition), box-shadow var(--transition);
+    border-radius: var(--radius-lg);
 }
 
     .post-image:hover {
@@ -149,7 +210,167 @@ body {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
 
-.modal-content {
-    background: transparent;
-    box-shadow: none;
+/* Modal */
+.modern-modal {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    color: var(--text-color);
+    transition: all var(--transition);
+}
+
+[data-bs-theme="dark"] .modern-modal {
+    background: rgba(30, 30, 30, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Inputs Glassy */
+.modern-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: inherit;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    transition: all var(--transition);
+    backdrop-filter: blur(8px);
+}
+
+    .modern-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .modern-input:focus {
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+    }
+
+/* Profile Pic */
+.profile-pic-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Texts */
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+/* Buttons Hover Animation */
+.comment-toggle-btn {
+    transition: transform 0.2s ease;
+}
+
+    .comment-toggle-btn:hover {
+        transform: translateY(-2px);
+    }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 1rem 0.75rem;
+    }
+
+    .modern-modal {
+        padding: 1rem;
+    }
+
+    .profile-pic-preview {
+        width: 90px;
+        height: 90px;
+    }
+
+    .post-image-wrapper {
+        max-height: 200px;
+    }
+
+    .comment-content {
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .form-control, .form-select {
+        padding: 0.5rem 0.75rem;
+    }
+}
+.navbar {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05) !important;
+    color: var(--text-color) !important; 
+    transition: all var(--transition);
+    padding: 0.75rem 1.5rem;
+}
+
+[data-bs-theme="dark"] .navbar {
+    background-color: rgba(15, 17, 19, 0.8) !important;
+    backdrop-filter: blur(10px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.navbar * {
+    color: var(--text-color) !important;
+}
+
+[data-bs-theme="dark"] .navbar * {
+    color: var(--navbar-text) !important;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.navbar-toggler {
+    border-color: var(--border-color) !important;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28var(--text-color), 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-bg);
+}
+
+.search-btn {
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    background-color: var(--form-bg);
+    transition: var(--transition);
+}
+
+.search-btn:hover {
+    background-color: var(--secondary-bg);
 }

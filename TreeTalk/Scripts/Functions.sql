@@ -78,7 +78,7 @@ WITH RECURSIVE CommentTree AS (
 
     UNION ALL
 
-    -- Recursive case: replies
+    -- Recursive: replies
     SELECT 
         c."Id" AS "CommentID",
         c."PostId" AS "PostID",

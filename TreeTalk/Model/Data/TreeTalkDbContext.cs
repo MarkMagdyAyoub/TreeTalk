@@ -45,5 +45,4 @@ public class TreeTalkDbContext : DbContext
 
   public IQueryable<CommentTreeDto> get_comment_children(int commentId) =>
     FromExpression(() => get_comment_children(commentId));
- 
 }

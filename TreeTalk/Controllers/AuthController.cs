@@ -245,7 +245,8 @@ public class AuthController : Controller
         Gender = gender != '\0' ? gender : 'U',
         Birthday = birthday ?? DateTime.Parse("1900-01-01"),
         CreatedAt = DateTime.Now,
-        LastLoginAt = DateTime.Now
+        LastLoginAt = DateTime.Now,
+        UserImageUrl = "/images/defaultProfile.png"
       };
 
       await _context.Users.AddAsync(user);
